@@ -29,6 +29,8 @@ jobs:
         run: |
           bun build --compile --target=bun-linux-x64 ./index.ts --outfile ./ntfy-node-x64
           bun build --compile --target=bun-linux-arm64 ./index.ts --outfile ./ntfy-node-arm64
+          bun build --compile --target=bun-linux-x64-musl ./index.ts --outfile ./ntfy-node-x64-musl
+          bun build --compile --target=bun-linux-arm64-musl ./index.ts --outfile ./ntfy-node-arm64-musl
 
       - name: Create Release Tag
         run: |
