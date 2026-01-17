@@ -30,11 +30,15 @@ jobs:
           bun build --compile --target=bun-linux-x64 ./index.ts --outfile ./ntfy-node-x64
           bun build --compile --target=bun-linux-arm64 ./index.ts --outfile ./ntfy-node-arm64
 
+      - name: Create Release Tag
+        run: |
+          echo "VERSION=${GITHUB_SHA:0:8}-$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.sha }}  # 使用提交哈希作为标签
-          name: Release ${{ github.sha }}
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
           files: |
             ntfy-node-x64
             ntfy-node-arm64
