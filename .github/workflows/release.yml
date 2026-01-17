@@ -1,14 +1,16 @@
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
   repository_dispatch:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
     if: |-
       startsWith(github.event.head_commit.message, 'release') || 
       startsWith(github.event.head_commit.message, 'Release')
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
@@ -28,6 +30,8 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.sha }}  # 使用提交哈希作为标签
+          name: Release ${{ github.sha }}
           files: |
             ntfy-node-x64
             ntfy-node-arm64
