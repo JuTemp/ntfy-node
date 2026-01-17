@@ -44,3 +44,5 @@ jobs:
           files: |
             ntfy-node-x64
             ntfy-node-arm64
+            ntfy-node-x64-musl
+            ntfy-node-arm64-musl
