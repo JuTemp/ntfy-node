@@ -1,0 +1,29 @@
+on:
+  push:
+  workflow_dispatch:
+  repository_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download dependencies
+        run: bun install
+
+      - name: Build for linux-x64 and linux-arm64
+        run: |
+          bun build --compile --target=bun-linux-x64 ./index.ts --outfile ./ntfy-node-x64
+          bun build --compile --target=bun-linux-arm64 ./index.ts --outfile ./ntfy-node-arm64
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'release'
+        with:
+          files: |
+            ntfy-node-x64
+            ntfy-node-arm64
